@@ -5,10 +5,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.github.ticoyk.teacherhelperb.models.Student;
-import com.github.ticoyk.teacherhelperb.repositories.StudentRepository;
+import com.github.ticoyk.teacherhelperb.repositories.MongoStudentRepository;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StudentController {
     
-    private StudentRepository studentRepository;
+    private MongoStudentRepository studentRepository;
 
-    StudentController(StudentRepository studentRepository){
+    StudentController(MongoStudentRepository studentRepository){
         this.studentRepository = studentRepository;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping("/api/students")
     public Set<Student> index(){
         Iterator<Student> iterator = this.studentRepository.findAll().iterator();
@@ -32,7 +30,6 @@ public class StudentController {
         return students;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/api/students")
     public Student create(@RequestBody Student student){
         return this.studentRepository.save(student);
