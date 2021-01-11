@@ -1,4 +1,4 @@
-package com.github.ticoyk.teacherhelperb.controllers;
+package com.github.ticoyk.teacherhelperb.controllers.rest;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,7 +7,6 @@ import java.util.Set;
 import com.github.ticoyk.teacherhelperb.models.Student;
 import com.github.ticoyk.teacherhelperb.repositories.MongoStudentRepository;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
