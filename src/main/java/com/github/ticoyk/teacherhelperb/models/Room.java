@@ -6,7 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Entity
 public class Room {
@@ -15,12 +17,13 @@ public class Room {
     @Id
     private String id;
 
+    @Indexed(unique=true)
     private String name;
     
     private Long columns;
     private Long rows;
-
-    @ManyToOne
+    
+    @OneToMany
     private Set<Desk> desks;
 
     public Room() { }

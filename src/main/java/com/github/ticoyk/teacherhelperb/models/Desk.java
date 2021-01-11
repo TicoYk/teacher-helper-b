@@ -1,15 +1,18 @@
 package com.github.ticoyk.teacherhelperb.models;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Entity
 public class Desk {
     
+    @Indexed(unique=true)
     private Integer posX;
     private Integer posY;
 
-    @OneToOne
+    @DBRef
     private Student student;
 
     public Desk() { }
