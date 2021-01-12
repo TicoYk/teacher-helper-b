@@ -1,18 +1,32 @@
 package com.github.ticoyk.teacherhelperb.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@Table(name="desk", indexes = {@Index(name = "room_posx_posy", columnList = "room_id, posx, posy", unique = true)})
 public class Desk {
-    
-    @Indexed(unique=true)
-    private Integer posX;
-    private Integer posY;
 
-    @DBRef
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id
+    private Long id;
+        
+    private Integer posX;
+
+    private Integer posY;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="student_id", referencedColumnName="id", nullable = false)
+    @JsonIgnoreProperties("desks")
     private Student student;
 
     public Desk() { }

@@ -2,28 +2,28 @@ package com.github.ticoyk.teacherhelperb.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-
-import org.springframework.data.mongodb.core.index.Indexed;
 
 @Entity
 public class Room {
 
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
-    private String id;
-
-    @Indexed(unique=true)
+    private Long id;
+    
     private String name;
     
     private Long columns;
     private Long rows;
     
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "room_id", nullable=false)
     private Set<Desk> desks;
 
     public Room() { }
@@ -41,11 +41,11 @@ public class Room {
         this.rows = rows;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
