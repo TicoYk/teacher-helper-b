@@ -35,9 +35,9 @@ public class RoomController {
         return this.roomRepository.save(room);
     }
 
-    @RequestMapping(value = "/api/rooms/{id}", method = RequestMethod.PUT)
-    public Room update(@PathVariable(value="id") Long id, @RequestBody Room room){
-        room.setId(id);
+    @RequestMapping(value = "/api/rooms", method = RequestMethod.PUT)
+    public Room put(@RequestBody Room room){
         return this.roomRepository.save(room);
     }
+    
 }
