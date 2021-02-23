@@ -8,7 +8,9 @@ import java.util.Set;
 import com.github.ticoyk.teacherhelperb.models.Desk;
 import com.github.ticoyk.teacherhelperb.models.Student;
 import com.github.ticoyk.teacherhelperb.repositories.StudentRepository;
+import com.github.ticoyk.teacherhelperb.services.StudentCrudService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,31 +21,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StudentController {
     
-    private StudentRepository studentRepository;
+    private StudentCrudService studentCrudService;
 
-    StudentController(StudentRepository studentRepository){
-        this.studentRepository = studentRepository;
+    StudentController(StudentCrudService studentCrudService){
+        this.studentCrudService = studentCrudService;
     }
 
     @RequestMapping("/api/students")
     public Set<Student> index(){
-        Iterator<Student> iterator = this.studentRepository.findAll().iterator();
-        Set<Student> students = new HashSet<Student>();
-        iterator.forEachRemaining((student) -> students.add(student));
-        return students;
+        return this.studentCrudService.getData();
     }
 
     @PostMapping("/api/students")
     public Student create(@RequestBody Student student){
-        return this.studentRepository.save(student);
+        return this.studentCrudService.createNewObject(student);
     }
 
+    @PutMapping("/api/students/{id}")
+    public Student updateStudent(@PathVariable(value="id") Long id, @RequestBody Student student){
+        return this.studentCrudService.updateObject(id ,student);
+    }
+
+    @DeleteMapping("/api/students/{id}")
+    public void deleteById(@PathVariable(value="id") Long id){
+        this.studentCrudService.deleteById(id);
+    }
+    
     @PutMapping("/api/students/{id}/desks")
     public Student addDesk(@PathVariable(value="id") Long id, @RequestBody Desk desk){
-        Optional<Student> optStudent = this.studentRepository.findById(id);
-        Student student = optStudent.get();
+        Student student = this.studentCrudService.findById(id);
         Set<Desk> desks = student.getDesks();
         student.setDesks(desks);
-        return this.studentRepository.save(student);
+        return this.studentCrudService.updateObject(id ,student);
     }
+    
 }

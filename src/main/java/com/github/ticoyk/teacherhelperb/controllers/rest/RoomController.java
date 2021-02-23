@@ -6,37 +6,48 @@ import java.util.Set;
 
 import com.github.ticoyk.teacherhelperb.models.Room;
 import com.github.ticoyk.teacherhelperb.repositories.RoomRepository;
+import com.github.ticoyk.teacherhelperb.services.RoomCrudService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RoomController {
     
-    private RoomRepository roomRepository;
+    private RoomCrudService roomCrudService;
 
-    RoomController(RoomRepository RoomRepository){
-        this.roomRepository = RoomRepository;
+    RoomController(RoomCrudService roomCrudService){
+        this.roomCrudService = roomCrudService;
     }
 
-    @RequestMapping(value = "/api/rooms", method = RequestMethod.GET)
+    @GetMapping("/api/rooms")
     public Set<Room> index(){
-        Set<Room> rooms = new HashSet<Room>();
-        Iterator<Room> iterator = this.roomRepository.findAll().iterator();
-        iterator.forEachRemaining(room -> { rooms.add(room);});
-        return rooms;
+        return this.roomCrudService.getData();
     }
 
-    @RequestMapping(value = "/api/rooms", method = RequestMethod.POST)
+    @GetMapping("/api/rooms/{id}")
+    public Room findById(@PathVariable Long id){
+        return this.roomCrudService.findById(id);
+    }
+
+    @PostMapping("/api/rooms")
     public Room create(@RequestBody Room room){
-        return this.roomRepository.save(room);
+        return this.roomCrudService.createNewObject(room);
     }
 
-    @RequestMapping(value = "/api/rooms", method = RequestMethod.PUT)
-    public Room put(@RequestBody Room room){
-        return this.roomRepository.save(room);
+    @PutMapping("/api/rooms/{id}")
+    public Room updateRoom(@PathVariable(value="id") Long id, @RequestBody Room room){
+        return this.roomCrudService.updateObject(id ,room);
+    }
+
+    @DeleteMapping("/api/rooms/{id}")
+    public void deleteById(@PathVariable(value="id") Long id){
+        this.roomCrudService.deleteById(id);
     }
     
 }

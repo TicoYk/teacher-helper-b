@@ -1,5 +1,7 @@
 package com.github.ticoyk.teacherhelperb.models;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -24,11 +26,11 @@ public class Room {
     
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "room_id", nullable=false)
-    private Set<Desk> desks;
+    private List<Desk> desks;
 
     public Room() { }
 
-    public Room(String name, Long columns, Long rows, Set<Desk> desks) {
+    public Room(String name, Long columns, Long rows, List<Desk> desks) {
         this.name = name;
         this.columns = columns;
         this.rows = rows;
@@ -73,11 +75,11 @@ public class Room {
         this.rows = rows;
     }
 
-    public Set<Desk> getDesks() {
+    public List<Desk> getDesks() {
         return desks;
     }
 
-    public void setDesks(Set<Desk> desks) {
+    public void setDesks(List<Desk> desks) {
         this.desks = desks;
     }
     

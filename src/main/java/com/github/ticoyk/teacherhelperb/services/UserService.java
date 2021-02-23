@@ -1,16 +1,13 @@
 package com.github.ticoyk.teacherhelperb.services;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import com.github.ticoyk.teacherhelperb.models.User;
 
-@Service
-public class UserService {
-    
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
+public interface UserService {
+
+    User findById(Long id);
+
+    User registerNewUser(User newObject);
+
+    User updateUser(Long id, User object);
+
 }
