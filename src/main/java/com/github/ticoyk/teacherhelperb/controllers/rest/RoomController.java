@@ -1,13 +1,12 @@
 package com.github.ticoyk.teacherhelperb.controllers.rest;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.github.ticoyk.teacherhelperb.models.Room;
-import com.github.ticoyk.teacherhelperb.repositories.RoomRepository;
 import com.github.ticoyk.teacherhelperb.services.RoomCrudService;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 public class RoomController {
@@ -47,7 +47,13 @@ public class RoomController {
 
     @DeleteMapping("/api/rooms/{id}")
     public void deleteById(@PathVariable(value="id") Long id){
-        this.roomCrudService.deleteById(id);
+        try{
+            this.roomCrudService.deleteById(id);
+        } catch(EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, e.getMessage()
+            );
+        }
     }
     
 }
