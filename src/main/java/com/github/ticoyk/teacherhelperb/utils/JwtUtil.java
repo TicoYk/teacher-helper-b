@@ -2,8 +2,10 @@ package com.github.ticoyk.teacherhelperb.utils;
 
 import static com.github.ticoyk.teacherhelperb.configurations.security.SecurityConstants.SECRET;
 import static com.github.ticoyk.teacherhelperb.configurations.security.SecurityConstants.TOKEN_PREFIX;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+
 import com.github.ticoyk.teacherhelperb.models.ApplicationUser;
 import com.github.ticoyk.teacherhelperb.services.ApplicationUserService;
 
@@ -26,7 +28,4 @@ public class JwtUtil {
         return this.applicationUserService.findByEmail(userEmail.toString());
     }
 
-    public String generateToken(ApplicationUser applicationUser) {
-        return null;
-    }
 }
