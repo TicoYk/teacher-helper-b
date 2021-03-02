@@ -41,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
 
-        // If not Then Try to find USER with Email e Password
+        // If not null Then Try to find USER with Email e Password
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         creds.getEmail(),
