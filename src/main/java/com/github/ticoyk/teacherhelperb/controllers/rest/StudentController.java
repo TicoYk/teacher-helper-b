@@ -6,7 +6,7 @@ import java.util.Set;
 
 import com.github.ticoyk.teacherhelperb.models.Desk;
 import com.github.ticoyk.teacherhelperb.models.Student;
-import com.github.ticoyk.teacherhelperb.services.StudentCrudService;
+import com.github.ticoyk.teacherhelperb.services.StudentUserCrudService;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,31 +28,41 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class StudentController {
     
-    private StudentCrudService studentCrudService;
+    private StudentUserCrudService studentCrudService;
 
-    StudentController(StudentCrudService studentCrudService){
+    StudentController(StudentUserCrudService studentCrudService){
         this.studentCrudService = studentCrudService;
     }
 
     @RequestMapping("/api/students")
-    public @ResponseBody Set<Student> index(){
-        return this.studentCrudService.getData();
+    public @ResponseBody Set<Student> index(@RequestHeader("Authorization") String token){
+        return this.studentCrudService.getData(token);
     }
 
     @PostMapping("/api/students")
-    public Student create(@RequestBody Student student){
-        return this.studentCrudService.createNewObject(student);
+    public Student create(
+            @RequestHeader("Authorization") String token, 
+            @RequestBody Student student
+        ){
+        return this.studentCrudService.createNewObject(student, token);
     }
 
     @PutMapping("/api/students/{id}")
-    public Student updateStudent(@PathVariable(value="id") Long id, @RequestBody Student student){
-        return this.studentCrudService.updateObject(id ,student);
+    public Student updateStudent(
+            @RequestHeader("Authorization") String token,
+            @PathVariable(value="id") Long id,
+            @RequestBody Student student
+        ){
+        return this.studentCrudService.updateObject(id ,student, token);
     }
 
     @DeleteMapping("/api/students/{id}")
-    public void deleteById(@PathVariable(value="id") Long id){
+    public void deleteById(
+            @RequestHeader("Authorization") String token,
+            @PathVariable(value="id") Long id
+        ){
         try {
-            this.studentCrudService.deleteById(id);
+            this.studentCrudService.deleteById(id, token);
         } catch(EmptyResultDataAccessException e) {
             throw new ResponseStatusException(
                 HttpStatus.NOT_FOUND, e.getMessage()
@@ -60,13 +71,18 @@ public class StudentController {
     }
     
     @PutMapping("/api/students/{id}/desks")
-    public Student addDesk(@PathVariable(value="id") Long id, @RequestBody Desk desk){
-        Student student = this.studentCrudService.findById(id);
+    public Student addDesk(
+            @RequestHeader("Authorization") String token,
+            @PathVariable(value="id") Long id, 
+            @RequestBody Desk desk
+        ){
+        Student student = this.studentCrudService.findById(id, token);
         Set<Desk> desks = student.getDesks();
         student.setDesks(desks);
-        return this.studentCrudService.updateObject(id ,student);
+        return this.studentCrudService.updateObject(id ,student, token);
     }
     
+    // To Do
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
