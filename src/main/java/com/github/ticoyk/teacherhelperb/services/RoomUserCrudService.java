@@ -9,32 +9,37 @@ import java.util.List;
 import java.util.Set;
 
 import com.github.ticoyk.teacherhelperb.models.Room;
+import com.github.ticoyk.teacherhelperb.models.ApplicationUser;
 import com.github.ticoyk.teacherhelperb.models.Desk;
 import com.github.ticoyk.teacherhelperb.repositories.RoomRepository;
+import com.github.ticoyk.teacherhelperb.utils.JwtUtil;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoomCrudService implements CrudService<Room> {
+public class RoomUserCrudService implements UserCrudService<Room> {
 
     private RoomRepository roomRepository;
+    private JwtUtil jwtUtil;
 
-    RoomCrudService(RoomRepository roomRepository){
+    RoomUserCrudService(RoomRepository roomRepository, JwtUtil jwtUtil){
         this.roomRepository = roomRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
-    public Room findById(Long id) {
-        Room room = this.roomRepository.findById(id).get();
+    public Room findById(Long id, String token) {
+        Room room = this.roomRepository.findByIdAndApplicationUserId(
+            id, getApplicationUser(token).getId());
         room.setDesks(ordenateDesksByPos(room));
         return room;
     }
 
     @Override
-    public Set<Room> getData() {
+    public Set<Room> getData(String token) {
         Set<Room> rooms = new HashSet<Room>();
         Iterator<Room> roomIterator= this.roomRepository
-            .findAll()
+            .findByApplicationUserId(getApplicationUser(token).getId())
             .iterator();
         
         roomIterator.forEachRemaining( room -> {
@@ -45,24 +50,26 @@ public class RoomCrudService implements CrudService<Room> {
     }
 
     @Override
-    public Room createNewObject(Room room) {
+    public Room createNewObject(Room room, String token) {
         room.setDesks(null);
+        room.setApplicationUser(getApplicationUser(token));
         return this.roomRepository.save(room);
     }
     
     @Override
-    public Room updateObject(Long id, Room newRoom) {
+    public Room updateObject(Long id, Room newRoom, String token) {
+        Room room = findById(id, token);
+        if(room == null){
+            return null;
+        }
         newRoom.setId(id);
         newRoom.setDesks(removeEmptyDesks(newRoom));
-        
         return this.roomRepository.save(newRoom);
     }
 
-    
-
     @Override
-    public void deleteById(Long id) {
-        this.roomRepository.deleteById(id);
+    public void deleteById(Long id, String token) {
+        this.roomRepository.deleteByIdAndApplicationUserId(id, getApplicationUser(token).getId());
     }
 
     private List<Desk> ordenateDesksByPos(Room room){
@@ -98,5 +105,9 @@ public class RoomCrudService implements CrudService<Room> {
             if(desk.getStudent() != null) nonEmptyDesks.add(desk);
         }
         return nonEmptyDesks;
+    }
+
+    private ApplicationUser getApplicationUser(String token){
+        return this.jwtUtil.parseTokenToUser(token);
     }
 }
