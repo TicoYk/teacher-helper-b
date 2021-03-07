@@ -12,7 +12,7 @@ public class ApplicationUserServiceImp implements ApplicationUserService{
 
     private ApplicationUserRepository applicationUserRepository;
     private BCryptPassword bCryptPassword;
-
+    
     public ApplicationUserServiceImp(ApplicationUserRepository applicationUserRepository, BCryptPassword bCryptPassword){
         this.applicationUserRepository = applicationUserRepository;
         this.bCryptPassword = bCryptPassword;
