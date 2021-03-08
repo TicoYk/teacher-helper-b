@@ -4,6 +4,7 @@
     <b>Postman Link</b>: https://www.getpostman.com/collections/715292f267cb10709143
     </br>
     <b>Production Back-end Link</b>: https://teacher-helper-b-hero.herokuapp.com/
+    <b>Obs: Will use a proper DNS only when the application is completed.(Front and Back)</b>
 </p>
 <p>
 If you desire to test the API, please use the Postman Link and change <b>localhost:8080</b> url to the <b>Production Back-end Link</b>
