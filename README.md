@@ -10,8 +10,9 @@ Global Variables for Postman:
 <img src="https://i.postimg.cc/sXDXQNwK/Screenshot-1.png"/>
 
 Postman Pre Request Script:
+
 The Pre Request script is for the purpose of Login and change the <b>Global Authorization</b> token
-``
+
 <pre>
 pm.sendRequest({
     url: pm.globals.get("authorization_url"),
@@ -31,6 +32,5 @@ pm.sendRequest({
     pm.globals.set('Authorization', token[0].value);
 });
 </pre>
-``
 
 <b>Still in development</b>
