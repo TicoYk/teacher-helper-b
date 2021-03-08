@@ -18,7 +18,7 @@ Global Variables for Postman:
 <p>
 Postman Pre Request Script:
 </br>
-    The Pre Request script is for the purpose of Login and change the <b>Global Authorization</b> token
+    The Pre Request script is for the purpose of Login and change the <b>Header Authorization</b> token
 </p>
 <pre>
 pm.sendRequest({
