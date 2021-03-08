@@ -1,5 +1,6 @@
 <h2>teacher-helper-b</h2>
-<h3 text-align:right>*Still in development</h3>
+<div text-align:right>
+</div>
 <p>The Back-end api for teacher helper, which is my first Standalone Project using Spring.<p>
 <p>
     <b>Postman Link</b>: https://www.getpostman.com/collections/715292f267cb10709143
@@ -40,3 +41,4 @@ pm.sendRequest({
 </pre>
 
 
+<b>*Still in development</b>
