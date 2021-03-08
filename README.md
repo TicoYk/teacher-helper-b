@@ -4,7 +4,8 @@ The Back-end api for teacher helper, which is my first Standalone Project using 
 <b>Postman Link</b>: https://www.getpostman.com/collections/715292f267cb10709143
 
 <b>Production Back-end Link</b>: https://teacher-helper-b-hero.herokuapp.com/
-If you desire to test the API, please uuse the Postman Link and change <b>Localhost</b> url to <b>Back-end</b> link
+
+If you desire to test the API, please use the Postman Link and change <b>localhost:8080</b> url to the <b>Production Back-end Link</b>
 
 Global Variables for Postman: 
 <img src="https://i.postimg.cc/sXDXQNwK/Screenshot-1.png"/>
